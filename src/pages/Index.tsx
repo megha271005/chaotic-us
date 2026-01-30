@@ -1,12 +1,27 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import WelcomeScreen from '@/components/WelcomeScreen';
+import StoryTimeline from '@/components/StoryTimeline';
+import SurpriseEnding from '@/components/SurpriseEnding';
+
+type Screen = 'welcome' | 'story' | 'ending';
 
 const Index = () => {
+  const [currentScreen, setCurrentScreen] = useState<Screen>('welcome');
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen">
+      {currentScreen === 'welcome' && (
+        <WelcomeScreen onStart={() => setCurrentScreen('story')} />
+      )}
+      {currentScreen === 'story' && (
+        <StoryTimeline
+          onBack={() => setCurrentScreen('welcome')}
+          onComplete={() => setCurrentScreen('ending')}
+        />
+      )}
+      {currentScreen === 'ending' && (
+        <SurpriseEnding onRestart={() => setCurrentScreen('welcome')} />
+      )}
     </div>
   );
 };
